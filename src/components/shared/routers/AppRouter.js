@@ -4,6 +4,12 @@ import { GameGuard } from "../routeProtectors/GameGuard";
 import GameRouter from "./GameRouter";
 import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
+import { RegisterGuard } from "../routeProtectors/RegisterGuard";
+import Register from "../../login/Register";
+import { ProfileGuard } from "../routeProtectors/ProfileGuard";
+import UsersRouter from "./UsersRouter";
+import Profile from "../../login/Profile";
+
 
 /**
  * Main router of your application.
@@ -36,6 +42,31 @@ class AppRouter extends React.Component {
                   <Login />
                 </LoginGuard>
               )}
+            />
+            <Route
+                path="/register"
+                exact render={() => ( //What is the arrow function for?, /** Why "<Register />", double check in React notes & documentation ? --> probably the reference to the function within RegisterGuard, not? */
+                    <RegisterGuard>
+                        <Register />
+                    </RegisterGuard>
+            )}
+            />
+            <Route
+                path="/users/"
+                exact render={() => (
+                <ProfileGuard>
+                    <UsersRouter base={"/users/"}/>
+                </ProfileGuard>
+            )}
+            />
+            <Route
+                path="/users/:userId"
+                component={Profile}
+                exact render={() => (
+                <ProfileGuard>
+                    <Profile />
+                </ProfileGuard>
+            )}
             />
             <Route path="/" exact render={() => <Redirect to={"/game"} />} />
           </div>

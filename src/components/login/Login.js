@@ -5,6 +5,9 @@ import { getDomain } from "../../helpers/getDomain";
 import User from "../shared/models/User";
 import { withRouter } from "react-router-dom";
 import { Button } from "../../views/design/Button";
+import {NewButton} from "../../views/design/Button";
+import {handleError} from "../../helpers/handleError";
+import {catchError} from "../../helpers/catchError";
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -20,7 +23,7 @@ const Form = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 60%;
-  height: 375px;
+  height: 400px;
   font-size: 16px;
   font-weight: 300;
   padding-left: 37px;
@@ -56,6 +59,17 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
+const headerLabel = styled.label`
+  color: white !important;
+`;
+
+const RegisterButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top:10px;
+  color: chartreuse;
+`
+
 /**
  * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
  * You should have a class (instead of a functional component) when:
@@ -75,7 +89,7 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: null,
+      password: null,
       username: null
     };
   }
@@ -84,31 +98,26 @@ class Login extends React.Component {
    * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
    */
   login() {
-    fetch(`${getDomain()}/users`, {
+    fetch(`${getDomain()}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
         username: this.state.username,
-        name: this.state.name
+        password: this.state.password
       })
     })
-      .then(response => response.json())
-      .then(returnedUser => {
-        const user = new User(returnedUser);
-        // store the token into the local storage
-        localStorage.setItem("token", user.token);
-        // user login successfully worked --> navigate to the route /game in the GameRouter
-        this.props.history.push(`/game`);
-      })
-      .catch(err => {
-        if (err.message.match(/Failed to fetch/)) {
-          alert("The server cannot be reached. Did you start it?");
-        } else {
-          alert(`Something went wrong during the login: ${err.message}`);
-        }
-      });
+        .then(handleError)
+        .then(response => response.json())
+        .then(returnedUser => {
+          const user = new User(returnedUser);
+          // store the token into the local storage
+          localStorage.setItem("token", user.token);
+          // user login successfully worked --> navigate to the route /game in the GameRouter
+          this.props.history.push(`/users/`);
+        })
+        .catch(catchError);
   }
 
   /**
@@ -133,37 +142,45 @@ class Login extends React.Component {
 
   render() {
     return (
-      <BaseContainer>
-        <FormContainer>
-          <Form>
-            <Label>Username</Label>
-            <InputField
-              placeholder="Enter here.."
-              onChange={e => {
-                this.handleInputChange("username", e.target.value);
-              }}
-            />
-            <Label>Name</Label>
-            <InputField
-              placeholder="Enter here.."
-              onChange={e => {
-                this.handleInputChange("name", e.target.value);
-              }}
-            />
-            <ButtonContainer>
-              <Button
-                disabled={!this.state.username || !this.state.name}
-                width="50%"
-                onClick={() => {
-                  this.login();
-                }}
-              >
-                Login
-              </Button>
-            </ButtonContainer>
-          </Form>
-        </FormContainer>
-      </BaseContainer>
+        <BaseContainer>
+          <FormContainer>
+            <Form>
+              <headerLabel>
+                <h2 color="#fffff">Login</h2>
+              </headerLabel>
+              <Label>Username</Label>
+              <InputField
+                  placeholder="Enter here.."
+                  onChange={e => {
+                    this.handleInputChange("username", e.target.value);
+                  }}
+              />
+              <Label>Password</Label>
+              <InputField
+                  placeholder="Enter here.."
+                  onChange={e => {
+                    this.handleInputChange("password", e.target.value);
+                  }}
+              />
+              <ButtonContainer>
+                <Button
+                    disabled={!this.state.username || !this.state.password}
+                    width="50%"
+                    onClick={() => {
+                      this.login();
+                    }}
+                >
+                  Login
+                </Button>
+              </ButtonContainer>
+              <RegisterButtonContainer>
+                <NewButton width="50%" onClick={() => {this.props.history.push("/register")}}>
+                  New to Santorini?
+                </NewButton>
+              </RegisterButtonContainer>
+            </Form>
+          </FormContainer>
+        </BaseContainer>
     );
   }
 }

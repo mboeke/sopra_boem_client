@@ -24,6 +24,12 @@ const PlayerContainer = styled.li`
   justify-content: center;
 `;
 
+const PlayerButtonContainer = styled.li`/*adjust element styling when hovering over it:  onMouseEnter={() => {this.props.}}*/
+  display: flex;
+
+`
+
+
 class Game extends React.Component {
   constructor() {
     super();
@@ -71,9 +77,12 @@ class Game extends React.Component {
             <Users>
               {this.state.users.map(user => {
                 return (
-                  <PlayerContainer key={user.id}>
-                    <Player user={user} />
-                  </PlayerContainer>
+                    <PlayerButtonContainer>
+                      <PlayerContainer key={user.id} width="100%" onClick={() =>
+                          this.props.history.push("/users/"+user.id)}>
+                        <Player user={user} />
+                      </PlayerContainer>
+                    </PlayerButtonContainer>
                 );
               })}
             </Users>
