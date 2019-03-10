@@ -24,7 +24,7 @@ class ProfileRouter extends React.Component {
                 <Route
                     exact
                     path={`${this.props.base}/edit`}
-                    component={Profile}
+                    component={Profile_editing}
                     render={() => <Profile_editing />}
                 />
             </Container>

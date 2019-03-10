@@ -15,12 +15,6 @@ const Container = styled(BaseContainer)`
   margin-bottom: 100px;
 `;
 
-const Label = styled.label`
-  margin-bottom: 10px;
-  color: white;
-  text-transform: uppercase;
-`;
-
 const FormContainer = styled.div`
   margin-top: 2em;
   display: flex;
@@ -44,6 +38,12 @@ const DetailsContainer = styled.div`
   transition: opacity 0.5s ease, transform 0.5s ease;
   margin-bottom: 20px;
   text-align: left;
+`;
+
+const Label = styled.label`
+  margin-bottom: 10px;
+  color: white;
+  text-transform: uppercase;
 `;
 
 const DataField = styled.div `
@@ -132,7 +132,7 @@ class Profile extends React.Component {
                                     {this.state.user_data.status}
                                 </DataField>
                             </DetailsContainer>
-                            <ButtonContainer> //readjust them again!!!
+                            <ButtonContainer>
                                 <UserDetailButton
                                     onClick={() => {//checking if current logged in user is allowed to edit the clicked profile
                                         if(this.authorized_user()){
