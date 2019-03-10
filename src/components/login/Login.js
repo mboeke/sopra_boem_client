@@ -59,15 +59,10 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
-const headerLabel = styled.label`
-  color: white !important;
-`;
-
 const RegisterButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top:10px;
-  color: chartreuse;
 `
 
 /**
@@ -105,16 +100,19 @@ class Login extends React.Component {
       },
       body: JSON.stringify({
         username: this.state.username,
-        password: this.state.password
+        password: this.state.password,
       })
     })
         .then(handleError)
         .then(response => response.json())
         .then(returnedUser => {
           const user = new User(returnedUser);
-          // store the token into the local storage
+          // store the token and decoded user_id into the local storage
           localStorage.setItem("token", user.token);
-          // user login successfully worked --> navigate to the route /game in the GameRouter
+          var decoded_token = JSON.parse(atob(returnedUser.token));
+          localStorage.setItem("user_id", decoded_token.user_id);
+
+          // user login successfully worked --> navigate to the route /users/ in the UsersRouter
           this.props.history.push(`/users/`);
         })
         .catch(catchError);
@@ -145,9 +143,9 @@ class Login extends React.Component {
         <BaseContainer>
           <FormContainer>
             <Form>
-              <headerLabel>
-                <h2 color="#fffff">Login</h2>
-              </headerLabel>
+              <headerlabel>
+                <h2 color={"white"}>Login</h2>
+              </headerlabel>
               <Label>Username</Label>
               <InputField
                   placeholder="Enter here.."

@@ -4,6 +4,7 @@ import { BaseContainer } from "../../helpers/layout";
 import { getDomain } from "../../helpers/getDomain";
 import { Spinner } from "../../views/design/Spinner";
 import { Button } from "../../views/design/Button";
+import { UserDetailButton } from "../../views/design/Button";
 import { withRouter } from "react-router-dom";
 import {handleError} from "../../helpers/handleError";
 import {catchError} from "../../helpers/catchError";
@@ -11,11 +12,7 @@ import {catchError} from "../../helpers/catchError";
 const Container = styled(BaseContainer)`
   color: white;
   text-align: center;
-`;
-
-const Users = styled.ul`
-  list-style: none;
-  padding-left: 0;
+  margin-bottom: 100px;
 `;
 
 const Label = styled.label`
@@ -49,15 +46,6 @@ const DetailsContainer = styled.div`
   text-align: left;
 `;
 
-const UserDetailsContainer = styled.div`
-  margin: 6px 0;
-  width: 280px;
-  padding: 10px;
-  border-radius: 6px;
-  display: flex;
-  border: 1px solid #ffffff26;
-`
-
 const DataField = styled.div `
   &::value{
     color: white;
@@ -74,15 +62,11 @@ const DataField = styled.div `
   color: white;
 `
 
-const UserIdContainer = styled.div `
-  margin-left: auto;
-  margin-right: 10px;
-  font-weight: bold;
-`
-
-const UsernameContainer = styled.div`
-  font-weight: bold;
-  color: #06c4ff;
+const ButtonContainer = styled.div `
+  width: 280px;
+  position: absolute;
+  bottom: 0;
+  align-items: center;
 `
 
 class Profile extends React.Component {
@@ -97,6 +81,10 @@ class Profile extends React.Component {
     logout() {
         localStorage.removeItem("token");
         this.props.history.push("/login");
+    };
+
+    authorized_user(){
+        return (this.state.user_data.id.toString() === localStorage.getItem("user_id").toString());
     };
 
     componentDidMount() {
@@ -137,33 +125,36 @@ class Profile extends React.Component {
                                 </DataField>
                                 <Label>Birthday</Label>
                                 <DataField>
-                                    Pending
+                                    {this.state.user_data.birthday_date}
                                 </DataField>
                                 <Label>Status</Label>
                                 <DataField>
                                     {this.state.user_data.status}
                                 </DataField>
-                                <Button
-                                    width={"50%"}
-                                    margin-bottom={"10px"}
-                                    onClick={() => {
-                                        this.props.history.push("/users/"+this.state.user_data.id+"/edit")
+                            </DetailsContainer>
+                            <ButtonContainer> //readjust them again!!!
+                                <UserDetailButton
+                                    onClick={() => {//checking if current logged in user is allowed to edit the clicked profile
+                                        if(this.authorized_user()){
+                                            console.log("user identical");
+                                            this.props.history.push("/users/"+this.state.user_data.id+"/edit");
+                                        }else {
+                                            alert("Your are not authorized to edit this profile");
+                                        }
                                     }}
                                 >
                                     Edit
-                                </Button>
-                                <Button
-                                    width={"50%"}
-                                    margin-bottom={"10px"}
+                                </UserDetailButton>
+                                <UserDetailButton
                                     onClick={() => {
-                                        this.props.history.push("/users")
+                                        this.props.history.push("/users");
                                     }}
                                 >
                                     Back To Overview
-                                </Button>
-                            </DetailsContainer>
+                                </UserDetailButton>
+                            </ButtonContainer>
                             <Button
-                                width="50%"
+                                width={"280px"}
                                 onClick={() => {
                                     this.logout();
                                 }}

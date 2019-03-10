@@ -102,12 +102,14 @@ class Register extends React.Component {
             .then(response => response.json())
             .then(returnedUser => {
                 const user = new User(returnedUser);
-                // store the token into the local storage
-                localStorage.setItem("token", user.token);
+
+                //no need to store the users token to local storage after registration as user shall login first before performing any action for which token may be needed,
+                //the token is then added to localstorage during login, otherwise user would be logged in automatically which is incorrect UX
+
+                //user registration successfully worked navigate to login page
+                this.props.history.push('/login');
             })
-            //user registration successfully worked navigate to login page
-            .then(this.props.history.push('/login'))
-            .catch(catchError);
+            .catch(catchError)
     }
 
     /**

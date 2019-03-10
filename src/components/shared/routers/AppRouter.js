@@ -9,6 +9,8 @@ import Register from "../../login/Register";
 import { ProfileGuard } from "../routeProtectors/ProfileGuard";
 import UsersRouter from "./UsersRouter";
 import Profile from "../../login/Profile";
+import { UsersGuard } from "../routeProtectors/UsersGuard";
+import ProfileRouter from "./ProfileRouter";
 
 
 /**
@@ -46,29 +48,36 @@ class AppRouter extends React.Component {
             <Route
                 path="/register"
                 exact render={() => ( //What is the arrow function for?, /** Why "<Register />", double check in React notes & documentation ? --> probably the reference to the function within RegisterGuard, not? */
-                    <RegisterGuard>
-                        <Register />
-                    </RegisterGuard>
+                <RegisterGuard>
+                    <Register />
+                </RegisterGuard>
             )}
             />
             <Route
                 path="/users/"
                 exact render={() => (
-                <ProfileGuard>
+                <UsersGuard>
                     <UsersRouter base={"/users/"}/>
-                </ProfileGuard>
+                </UsersGuard>
             )}
             />
             <Route
                 path="/users/:userId"
-                component={Profile}
                 exact render={() => (
                 <ProfileGuard>
-                    <Profile />
+                    <ProfileRouter base={"/users/:userId"} />
                 </ProfileGuard>
             )}
             />
-            <Route path="/" exact render={() => <Redirect to={"/game"} />} />
+            <Route
+                path="/users/:userId/edit"
+                exact render={() => (
+                <ProfileGuard>
+                    <ProfileRouter base={"/users/:userId"} />
+                </ProfileGuard>
+            )}
+            />
+            <Route path="/" exact render={() => <Redirect to={"/login"} />} />
           </div>
         </Switch>
       </BrowserRouter>

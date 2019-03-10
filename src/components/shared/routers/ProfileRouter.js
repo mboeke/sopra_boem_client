@@ -1,16 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { Redirect, Route } from "react-router-dom";
-import Game from "../../game/Game";
-import UserOverview from "../../login/UserOverview";
 import Profile from "../../login/Profile";
+import Profile_editing from "../../login/Profile_editing";
 
 const Container = styled.div`
-  display: flex;
   flex-direction: column;
 `;
 
-class UsersRouter extends React.Component {
+class ProfileRouter extends React.Component {
     render() {
         /**
          * "this.props.base" is "/app" because as been passed as a prop in the parent of GameRouter, i.e., App.js
@@ -19,8 +17,15 @@ class UsersRouter extends React.Component {
             <Container>
                 <Route
                     exact
-                    path={`${this.props.base}`}
-                    render={() => <UserOverview />}
+                    path={`${this.props.base}`} //passing data from parent component to child component through props
+                    component={Profile}
+                    render={() => <Profile />}
+                />
+                <Route
+                    exact
+                    path={`${this.props.base}/edit`}
+                    component={Profile}
+                    render={() => <Profile_editing />}
                 />
             </Container>
         );
@@ -29,4 +34,4 @@ class UsersRouter extends React.Component {
 /*
 * Don't forget to export your component!
  */
-export default UsersRouter;
+export default ProfileRouter;
