@@ -31,6 +31,7 @@ const Form = styled.div`
   border-radius: 5px;
   background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
   transition: opacity 0.5s ease, transform 0.5s ease;
+  color: white;
 `;
 
 const InputField = styled.input`
