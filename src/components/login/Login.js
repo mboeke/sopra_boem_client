@@ -146,9 +146,7 @@ class Login extends React.Component {
         <BaseContainer>
           <FormContainer>
             <Form>
-              <headerlabel>
-                <h2 color={"white"}>Login</h2>
-              </headerlabel>
+              <h2>Login</h2>
               <Label>Username</Label>
               <InputField
                   placeholder="Enter here.."

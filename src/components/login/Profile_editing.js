@@ -27,7 +27,7 @@ const DetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
-  height: 600px;
+  height: 510px;
   font-size: 16px;
   font-weight: 300;
   padding-left: 37px;
@@ -41,8 +41,8 @@ const DetailsContainer = styled.div`
 `;
 
 const Label = styled.label`
+  text-align: left;
   color: white;
-  margin-bottom: 10px;
   text-transform: uppercase;
 `;
 
@@ -56,11 +56,12 @@ const DataField = styled.div `
   border-radius: 20px;
   margin-bottom: 15px;
   background: rgba(255, 255, 255, 0.2);
+  color: white;
 `
 
 const InputDataField = styled.input`
 &::placeholder{
-  color: rgba(255, 255, 255, 0.3);
+  color: white;
 }
   height: 35px;
   padding-top: 5px;
@@ -75,10 +76,10 @@ const InputDataField = styled.input`
 `
 
 const ButtonContainer = styled.div `
+  align-self: center;
+  text-align: center;
   width: 280px;
-  position: absolute;
-  bottom: 0;
-  align-items: center;
+  padding-top: 20px;
 `
 
 //check again if user has editing rights with "check_authorized_for_editing()" if user may try to open url directly: "domain/users/id/edit"
@@ -115,12 +116,16 @@ class Profile extends React.Component {
     };
 
     handleInputChange(key, value) {
-        // Example: if the key is username, this statement is the equivalent to the following one:
-        // this.setState({'username': value});
         this.setState({ [key]: value });
-        console.log("New username: "+this.state.username);
-        console.log("New birthday: "+this.state.birthday_date);
     };
+
+    check_values(){
+        if(this.state.username === null){
+            this.setState({["username"]: this.state.user_data.username});
+        }else if (this.state.birthday_date === null){
+            this.setState({["birthday_date"]: this.state.user_data.birthday_date})
+        }
+    }
 
     componentDidMount() {
         const {userId} = this.props.match.params;
@@ -177,52 +182,55 @@ class Profile extends React.Component {
                 ) : (
                     <FormContainer>
                         <DetailsContainer>
-                            <Label>User Id*</Label>
-                            <DataField
-                                onClick={() => alert("This field cannot be modified")}
-                            >
-                                {this.state.user_data.id}
-                            </DataField>
-                            <Label>Username</Label>
-                            <InputDataField
-                                placeholder={this.state.user_data.username}
-                                //placeholder={"Enter your new username here"}
-                                //value={this.state.user_data.username}
-                                onClick={()=>{this.setState({username: ""})}}
-                                onChange={e => this.handleInputChange("username", e.target.value)}
-                            >
-                            </InputDataField>
-                            <Label>Creation Date*</Label>
-                            <DataField
-                                onClick={() => alert("This field cannot be modified")}
-                            >
-                                {this.state.user_data.creation_date}
-                            </DataField>
-                            <Label/*add info hover for correct input format*/>Birthday</Label>
-                            <InputDataField
-                                placeholder={this.state.user_data.birthday_date}
-                                //value={this.state.user_data.birthday_date}
-                                onClick={()=>{this.setState({birthday_date: ""})}}
-                                onChange={e => this.handleInputChange("birthday_date", e.target.value)}
-                            >
-                            </InputDataField>
-                            <Label>Status*</Label>
-                            <DataField
-                                onClick={() => alert("This field cannot be modified")}
-                            >
-                                {this.state.user_data.status}
-                            </DataField>
+                                <Label>User Id*</Label>
+                                <DataField
+                                    onClick={() => alert("This field cannot be modified")}
+                                >
+                                    {this.state.user_data.id}
+                                </DataField>
+                                <Label>Username</Label>
+                                <InputDataField
+                                    placeholder={this.state.user_data.username}
+                                    onChange={e => {this.handleInputChange("username", e.target.value);}}
+                                >
+                                </InputDataField>
+                                <Label>Creation Date*</Label>
+                                <DataField
+                                    onClick={() => alert("This field cannot be modified")}
+                                >
+                                    {this.state.user_data.creation_date}
+                                </DataField>
+                                <Label/*add info hover for correct input format*/>Birthday</Label>
+                                <InputDataField
+                                    placeholder={this.state.user_data.birthday_date}
+                                    onChange={e => this.handleInputChange("birthday_date", e.target.value)}
+                                >
+                                </InputDataField>
+                                <Label>Status*</Label>
+                                <DataField
+                                    onClick={() => alert("This field cannot be modified")}
+                                >
+                                    {this.state.user_data.status}
+                                </DataField>
+                            <ButtonContainer>
+                                <UserDetailButton
+                                    disabled={!this.state.username && !this.state.birthday_date}
+                                    onClick={() => {
+                                        this.check_values();
+                                        this.update_user_data();
+                                    }}
+                                >
+                                    Save
+                                </UserDetailButton>
+                                <UserDetailButton
+                                    onClick={() => {
+                                        this.props.history.push("/users/"+this.state.user_data.id);
+                                    }}
+                                >
+                                    Cancel
+                                </UserDetailButton>
+                            </ButtonContainer>
                         </DetailsContainer>
-                        <ButtonContainer>
-                            <UserDetailButton
-                                disabled={!this.state.username && !this.state.birthday_date}
-                                onClick={() => {
-                                    this.update_user_data();
-                                }}
-                            >
-                                Save
-                            </UserDetailButton>
-                        </ButtonContainer>
                         <Button
                             width={"280px"}
                             onClick={() => {
@@ -230,7 +238,7 @@ class Profile extends React.Component {
                                 if(!this.state.username || !this.state.username){
                                     this.logout();
                                 }else{
-                                    alert("Please save your adjusted user details or remove them to logout")
+                                    alert("Please save your adjusted user details or remove them before loggin out")
                                 }
                             }}
                         >

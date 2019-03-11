@@ -27,7 +27,7 @@ const DetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 80%;
-  height: 600px;
+  height: 510px;
   font-size: 16px;
   font-weight: 300;
   padding-left: 37px;
@@ -41,15 +41,11 @@ const DetailsContainer = styled.div`
 `;
 
 const Label = styled.label`
-  margin-bottom: 10px;
   color: white;
   text-transform: uppercase;
 `;
 
 const DataField = styled.div `
-  &::value{
-    color: white;
-  }
   height: 35px;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -63,10 +59,10 @@ const DataField = styled.div `
 `
 
 const ButtonContainer = styled.div `
+  align-self: center;
+  text-align: center;
   width: 280px;
-  position: absolute;
-  bottom: 0;
-  align-items: center;
+  padding-top: 20px;
 `
 
 class Profile extends React.Component {
@@ -110,9 +106,8 @@ class Profile extends React.Component {
                 {!this.state.user_data ? (
                     <Spinner />
                 ) : (
-                    <div>
-                        <FormContainer>
-                            <DetailsContainer>
+                    <FormContainer>
+                        <DetailsContainer>
                                 <Label>User Id</Label>
                                 <DataField>{this.state.user_data.id}</DataField>
                                 <Label>Username</Label>
@@ -131,7 +126,6 @@ class Profile extends React.Component {
                                 <DataField>
                                     {this.state.user_data.status}
                                 </DataField>
-                            </DetailsContainer>
                             <ButtonContainer>
                                 <UserDetailButton
                                     onClick={() => {//checking if current logged in user is allowed to edit the clicked profile
@@ -153,16 +147,16 @@ class Profile extends React.Component {
                                     Back To Overview
                                 </UserDetailButton>
                             </ButtonContainer>
-                            <Button
-                                width={"280px"}
-                                onClick={() => {
-                                    this.logout();
-                                }}
-                            >
-                                Logout
-                            </Button>
-                        </FormContainer>
-                    </div>
+                        </DetailsContainer>
+                        <Button
+                            width={"280px"}
+                            onClick={() => {
+                                this.logout();
+                            }}
+                        >
+                            Logout
+                        </Button>
+                    </FormContainer>
                 )}
             </Container>
         );
