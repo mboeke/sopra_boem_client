@@ -121,9 +121,13 @@ class Profile extends React.Component {
 
     check_values(){
         if(this.state.username === null){
-            this.setState({["username"]: this.state.user_data.username});
-        }else if (this.state.birthday_date === null){
-            this.setState({["birthday_date"]: this.state.user_data.birthday_date})
+            this.state.username = this.state.user_data.username;
+        }
+        if(this.state.birthday_date === null){
+            this.state.birthday_date = this.state.user_data.birthday_date;
+        }
+        if(this.state.username != null && this.state.birthday_date != null){
+            return true
         }
     }
 
@@ -216,8 +220,11 @@ class Profile extends React.Component {
                                 <UserDetailButton
                                     disabled={!this.state.username && !this.state.birthday_date}
                                     onClick={() => {
-                                        this.check_values();
-                                        this.update_user_data();
+                                        if(this.check_values()){
+                                            this.update_user_data();
+                                        }else{
+                                            alert("Incorrect input");
+                                        }
                                     }}
                                 >
                                     Save

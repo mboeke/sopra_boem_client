@@ -130,7 +130,6 @@ class Profile extends React.Component {
                                 <UserDetailButton
                                     onClick={() => {//checking if current logged in user is allowed to edit the clicked profile
                                         if(this.authorized_user()){
-                                            console.log("user identical");
                                             this.props.history.push("/users/"+this.state.user_data.id+"/edit");
                                         }else {
                                             alert("Your are not authorized to edit this profile");
