@@ -127,7 +127,7 @@ class Profile extends React.Component {
             this.state.birthday_date = this.state.user_data.birthday_date;
         }
         if(this.state.username != null && this.state.birthday_date != null){
-            return true
+            return true;
         }
     }
 
@@ -150,7 +150,7 @@ class Profile extends React.Component {
     update_user_data(){
         const {userId} = this.props.match.params;
         fetch(`${getDomain()}/users/${userId}/edit`, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
