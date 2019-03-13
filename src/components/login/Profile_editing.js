@@ -126,7 +126,9 @@ class Profile extends React.Component {
         if(this.state.birthday_date === null){
             this.state.birthday_date = this.state.user_data.birthday_date;
         }
-        if(this.state.username != null && this.state.birthday_date != null){
+        if(this.state.user_data.birthday_date === null && this.state.username != null){
+            return true;
+        }else if(this.state.username != null && this.state.birthday_date != null) {
             return true;
         }
     }
