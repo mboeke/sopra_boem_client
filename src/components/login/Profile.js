@@ -88,7 +88,8 @@ class Profile extends React.Component {
         fetch(`${getDomain()}/users/${userId}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization" : localStorage.getItem("token").toString(),
             }
         })
             .then(handleError)

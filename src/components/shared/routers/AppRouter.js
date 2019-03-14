@@ -47,7 +47,7 @@ class AppRouter extends React.Component {
             />
             <Route
                 path="/register"
-                exact render={() => ( //What is the arrow function for?, /** Why "<Register />", double check in React notes & documentation ? --> probably the reference to the function within RegisterGuard, not? */
+                exact render={() => (
                 <RegisterGuard>
                     <Register />
                 </RegisterGuard>

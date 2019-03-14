@@ -138,7 +138,8 @@ class Profile extends React.Component {
         fetch(`${getDomain()}/users/${userId}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization" : localStorage.getItem("token").toString(),
             }
         })
             .then(handleError)
@@ -154,7 +155,8 @@ class Profile extends React.Component {
         fetch(`${getDomain()}/users/${userId}/edit`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "authorization" : localStorage.getItem("token").toString(),
             },
             body: JSON.stringify({
                 id: this.state.user_data.id,
@@ -172,10 +174,7 @@ class Profile extends React.Component {
                 }else{
                     throw new Error("Database could not be updated")
                 }
-            }
-                //confirm user data has been saved, wait on confirmation page to redirect user to "users/id"
-                //this.props.history.push(`/users/data_saved`)
-            )
+            })
             .catch(catchError)
     }
 
