@@ -87,15 +87,6 @@ const ButtonContainer = styled.div `
 //highlight those that are editable with different color than those which are not
     // validate user input, required fields cannot be empty show alert that fields with "*" have to be provided, if any field is missing or set to null although requiring value
 
-/*
-    <InputField
-placeholder="Enter here.."
-onChange={e => {
-    this.handleInputChange("username", e.target.value);
-}}
-/>
-*/
-
 
 class Profile extends React.Component {
 
